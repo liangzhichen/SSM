@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>主页面</title>
+    <script src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+    <script type="text/javascript" src="js/json2.js"></script>
+    <script type="text/javascript" src="./web/js/common.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=8">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+</head>
+<body>
+<table>
+    <tr>
+        <td>请自行打开F12，所有请求都有console打印</td>
+
+    </tr>
+
+    <tr>
+        <td>H5在调试的时候，只要web/js/common.js的getGUrl换成
+            http://20.26.20.83:9301/sjyytmg/</td>
+        <td>getSessionId改成自己独有的名称</td>
+    </tr>
+    <tr>
+        <td><br></td>
+    </tr>
+
+    <tr>
+        <td><br></td>
+    </tr>
+    <tr>
+        <td>banner相关</td>
+    </tr>
+    <tr>
+        <td><a href="#" id="imageField" onClick="queryBannerList()"
+               class="button">demo</a></td>
+        <td><a href="#" id="imageField" onClick="getOneBanner()"
+               class="button">获取单个banner</a></td>
+    </tr>
+</table>
+<script type="text/javascript">
+    var gLocation = window.location.href, gRe = /^(http:\/\/|https:\/\/)|([^\/]*\/)/g, gArr = gLocation
+            .match(gRe);
+    var gUrl = getGUrl();
+    var sessionId = getSessionId();
+
+    var activeId = "";
+
+    function adduser() {
+
+        var jsonValue = new Object();
+        jsonValue.staffName = "中文";
+        jsonValue.billId = "332432617";
+        jsonValue.organizeId = 123;
+        jsonValue.email = "22441@qq.com";
+        jsonValue.code = "bbbc2csf";
+        jsonValue.password = "pass";
+
+        var jsonStr = JSON.stringify(jsonValue);
+        console.log("adduser:");
+        var url = gUrl + "user/addUser?session=" + sessionId;
+        ajax(url, jsonStr).done(function(data, status) {//采用这种传递方法，可以处理掉特殊符号和中文的问题
+
+            console.log(data);
+            if (data.result == 0) {
+                alert(data.msg);
+            } else {
+                alert(data.msg);
+            }
+        })
+    }
+    function addBanner() {
+        var jsonValue2 = new Object();
+        jsonValue2.ccc = "123";
+        jsonValue2.ddd = "123";
+
+        var jsonValue = new Object();
+        jsonValue.activeName = "活动名称";
+        jsonValue.activeCityId = "571";//活动地市
+        jsonValue.activeDesc = "描述描述";//活动描述
+        jsonValue.activeStartDate = "2016-12-01 11:11:11";//活动开始时间
+        jsonValue.activeEndDate = "2017-12-01 23:59:59";//活动结束时间
+        jsonValue.imageUrl = "banner20161227101952737.png";//活动图片地址
+        jsonValue.urlType = "1";//链接类别
+        jsonValue.h5Url = "http://www.baidu.com?aaaaa=2";//H5地址
+        //jsonValue.h5Args = "aaa=1111&ff=2";//H5链接参数
+        jsonValue.ifLogin = "1";//是否需要登录
+        jsonValue.needGesture = "0";//是否需要手势密码
+        jsonValue.ifShare = "0";//是否可以分享
+        jsonValue.shareContent = "分享内容内容";//分享内容
+
+        console.log("addBanner:");
+        //var jsonStr = JSON.stringify(jsonValue);
+        var url = gUrl + "banner/add?session=" + sessionId;
+        ajax(url, jsonValue).done(function(data, status) {//采用这种传递方法，可以处理掉特殊符号和中文的问题
+
+            console.log(data);
+            if (data.result == 0) {
+                activeId = data.pkid;
+                alert(data.msg);
+            } else {
+                alert(data.msg);
+            }
+        })
+    }
+
+    function modifyBanner() {
+        //改了什么字段就传什么，不传的话就不修改
+        var jsonValue = new Object();
+        jsonValue.activeId = activeId;
+        jsonValue.activeName = "活动名称22222";
+        jsonValue.activeCityId = 573;//活动地市
+        jsonValue.activeDesc = "描述描aaaaa述";//活动描述
+        jsonValue.activeStartDate = "2016-12-01 11:11:11";//活动开始时间
+        jsonValue.activeEndDate = "2016-12-01 23:59:59";//活动结束时间
+        jsonValue.imageUrl = "banner20161227101952737.png";//活动图片地址
+        jsonValue.urlType = "1";//链接类别，固定用1：H5
+        jsonValue.h5Url = "http://aaaaa.bbb.ccc";//H5地址
+        jsonValue.h5Args = "aaa=1111&ff=2";//H5链接参数
+        jsonValue.ifLogin = "1";//是否需要登录
+        jsonValue.needGesture = "1";//是否需要手势密码
+        jsonValue.ifShare = "1";//是否可以分享
+        jsonValue.shareContent = "分享内容内容";//分享内容
+        console.log("modifyBanner:");
+        var jsonStr = JSON.stringify(jsonValue);
+        var url = gUrl + "banner/modify?session=" + sessionId;
+        ajax(url, jsonStr).done(function(data, status) {//采用这种传递方法，可以处理掉特殊符号和中文的问题
+
+            console.log(data);
+            if (data.result == 0) {
+                alert(data.msg);
+            } else {
+                alert(data.msg);
+            }
+        })
+    }
+
+    function getCurUser() {
+
+    }
+
+    getCurUser();
+
+    function loginOut() {
+
+        var url = gUrl + "logout?session=" + sessionId;
+        ajax(url, '').done(function(data, status) {
+
+            if (data.result == 0) {
+                location.replace("index.html");
+            } else {
+                alert("登出失败");
+            }
+        })
+    }
+
+    function queryList() {
+
+        var url = gUrl + "user/list?session=" + sessionId;
+        ajax(url, '').done(function(data, status) {
+            console.log("queryUserList:");
+            console.log(data);
+            if (data.result == 0) {
+                alert(data.list);
+            } else {
+                alert(data.msg);
+            }
+        })
+    }
+
+    function getOneBanner() {
+        console.log("getOneBanner:");
+        var jsonValue = new Object();
+        jsonValue.activeId = "10038";
+        var jsonStr = JSON.stringify(jsonValue);
+        var url = gUrl + "banner/getOne?session=" + sessionId;
+        ajax(url, jsonStr).done(function(data, status) {
+
+            console.log(data);
+            if (data.result == 0) {
+                alert(data.activeName);
+            } else {
+                alert(data.msg);
+            }
+        })
+
+    }
+
+    function queryBannerList() {
+        var jsonValue = new Object();
+        jsonValue.id = "138";
+
+        var jsonStr = JSON.stringify(jsonValue);
+        console.log("queryBannerList:");
+        var url = "http://localhost:8185/mgr/FlowAikanRecords/findById?";
+        ajax(url, jsonStr).done(function(data, status) {
+
+            console.log(data);
+            if (data.result == 0) {
+                alert(data.list[0].activeName);
+            } else {
+                alert(data.msg);
+            }
+        })
+    }
+    function queryDimCity() {
+
+        var url = gUrl + "dimunify/getByDimType?session=" + sessionId
+                + "&dimType=CITY";
+        //CITY  地市
+        //IF_SHARE  是否可以分享
+        //URL_TYPE  链接类别
+        //IF_LOGIN  是否需要登录
+        //IF_LOGIN  是否需要登录
+        //NEED_GESTURE  是否需要手势密码
+        //PUBLISH_STATUS 发布状态
+        //APPROVE_STATUS 审批状态
+        //ACTIVE_TYPE 活动类型
+        ajax(url, '').done(function(data, status) {
+            console.log("queryDimCity:");
+            console.log(data);
+            if (data.result == 0) {
+                alert(data.list[0].dimTxt);
+            } else {
+                alert(data.msg);
+            }
+        })
+    }
+    function getHdGroup() {
+
+        var url = gUrl + "dimunify/getDimTestGroupList?session="
+                + sessionId;
+        //CITY  地市
+        //IF_SHARE  是否可以分享
+        //URL_TYPE  链接类别
+        //IF_LOGIN  是否需要登录
+        //IF_LOGIN  是否需要登录
+        //NEED_GESTURE  是否需要手势密码
+        //PUBLISH_STATUS 发布状态
+        //APPROVE_STATUS 审批状态
+        ajax(url, '').done(function(data, status) {
+            console.log("getHdGroup:");
+            console.log(data);
+            if (data.result == 0) {
+                alert(data.list[0].name);
+            } else {
+                alert(data.msg);
+            }
+        })
+    }
+
+    //获取banner目前的排序情况，入参是地市，0或者570-580
+    function queryOrder() {
+        var jsonValue = new Object();
+        jsonValue.activeCityId = "571";//活动地市
+
+        var jsonStr = JSON.stringify(jsonValue);
+        console.log("queryOrder:");
+        var url = gUrl + "banner/queryOrder?session=" + sessionId;
+        ajax(url, jsonStr).done(function(data, status) {
+
+            console.log(data);
+            if (data.result == 0) {
+                alert(data.list[0].activeName);
+            } else {
+                alert(data.msg);
+            }
+        })
+    }
+    //保存banner的排序
+    function saveOrder() {
+        var jsonValue = new Object();
+
+        jsonValue.newBannerOrder = "10176,10143";//更换顺序以后的activeId按顺序排好，传给后台
+
+        var jsonStr = JSON.stringify(jsonValue);
+        console.log("saveOrder:");
+        var url = gUrl + "banner/saveOrder?session=" + sessionId;
+        ajax(url, jsonStr).done(function(data, status) {
+
+            console.log(data);
+            if (data.result == 0) {
+            } else {
+                alert(data.msg);
+            }
+        })
+    }
+
+    function deleteBanner() {
+        var jsonValue = new Object();
+
+        jsonValue.activeIds = activeId;//多个用逗号分隔  10109,10109  这样
+
+        var jsonStr = JSON.stringify(jsonValue);
+        console.log("deleteBanner:");
+        var url = gUrl + "banner/delete?session=" + sessionId;
+        ajax(url, jsonStr).done(function(data, status) {
+
+            console.log(data);
+            if (data.result == 0) {
+            } else {
+                alert(data.msg);
+            }
+        })
+    }
+
+    function offlineBanner() {
+        var jsonValue = new Object();
+
+        jsonValue.activeIds = activeId;//更换顺序以后的activeId按顺序排好，传给后台
+
+        var jsonStr = JSON.stringify(jsonValue);
+        console.log("offlineBanner:");
+        var url = gUrl + "banner/offline?session=" + sessionId;
+        ajax(url, jsonStr).done(function(data, status) {
+
+            console.log(data);
+            if (data.result == 0) {
+            } else {
+                alert(data.msg);
+            }
+        })
+    }
+
+    function createDeployment() {
+        var jsonValue = new Object();
+        jsonValue.localResource ="bpmn/firstpage/PublishFirstPage.bpmn20.xml";// activeId;
+
+        var jsonStr = JSON.stringify(jsonValue);
+        console.log("createDeployment:");
+        var url = gUrl + "workflow/deployment?session=" + sessionId;
+        ajax(url, jsonStr).done(function(data, status) {
+
+            console.log(data);
+            if (data.result == 0) {
+                alert("部署成功");
+            } else {
+                alert(data.msg);
+            }
+        })
+    }
+
+    function hdPublishBanner() {
+        var jsonValue = new Object();
+
+        jsonValue.activeId = activeId;
+        jsonValue.hdStartDate = "2016-12-01 01:01:01";
+        jsonValue.hdEndDate = "2017-12-01 01:01:01";
+        //以下2个参数有且仅有一个
+        //jsonValue.groupId ="12345";//如果是导入或者下拉框选择，就带这个参数
+        jsonValue.testBillIds = "15868457287,12345678909";//如果是直接写入的就带这个参数,允许逗号或者换行
+
+        var jsonStr = JSON.stringify(jsonValue);
+        console.log("hdPublishBanner:");
+        var url = gUrl + "banner/hdPublish?session=" + sessionId;
+        ajax(url, jsonStr).done(function(data, status) {
+
+            console.log(data);
+            if (data.result == 0) {
+            } else {
+                alert(data.msg);
+            }
+        })
+    }
+
+    function publishBanner() {
+        var jsonValue = new Object();
+
+        jsonValue.activeId = activeId;
+
+        var jsonStr = JSON.stringify(jsonValue);
+
+        var url = gUrl + "banner/publish?session=" + sessionId;
+        ajax(url, jsonStr).done(function(data, status) {
+            console.log("publishBanner:");
+            console.log(data);
+            if (data.result == 0) {
+            } else {
+                alert(data.msg);
+            }
+        })
+    }
+
+    function commitBanner() {
+        var jsonValue = new Object();
+
+        jsonValue.activeId = activeId;
+
+        var jsonStr = JSON.stringify(jsonValue);
+        console.log("commitBanner:");
+        var url = gUrl + "banner/commit?session=" + sessionId;
+        ajax(url, jsonStr).done(function(data, status) {
+
+            console.log(data);
+            if (data.result == 0) {
+            } else {
+                alert(data.msg);
+            }
+        })
+    }
+    var taskId = "272506";
+    function toDoList() {
+        var jsonValue = new Object();
+        jsonValue.pageSize = "10";//每页数量
+        jsonValue.curPage = "1";//当前页码，从1开始
+        jsonValue.activeCityId = "571";//地市
+        jsonValue.activeType = "1";//busiId和activeType是一个意思
+        jsonValue.activeName = "活动名称";
+
+        var jsonStr = JSON.stringify(jsonValue);
+        console.log("toDoList:");
+        var url = gUrl + "orderInfo/toDoList?session=" + sessionId;
+        ajax(url, jsonStr).done(function(data, status) {
+
+            console.log(data);
+            if (data.result == 0) {
+                alert(data.list[0].orderName);//也就是activeName
+                taskId = data.list[0].taskId;//在审核同意或者不同意的时候需要传过去
+
+                //"busiId":1,"  表示banner
+                //"orderCode":"Ban-20161228112658-058   工单编号
+                //"nodeName":"banner管理员审核"    当前环节名称
+                //"activeCityId":571   活动地市
+                //activeStartDate":"2016-12-01 11:11:11","activeEndDate":"2017-12-01 23:59:59","   活动的开始和结束时间
+                //arriveDate":"2016-12-28 11:27:07","  操作时间，也叫到达时间
+                //creator":"系统管理员","     创建人，建议需求里面的操作人改成创建人
+
+            } else {
+                alert(data.msg);
+            }
+        })
+    }
+    function approveTask(a) {
+        var jsonValue = new Object();
+
+        jsonValue.taskId = '462513';//查询接口里面的taskId
+        jsonValue.approveResult = a;//1表示同意（通过），2表示不同意（驳回）
+        jsonValue.approveView = "这是审核意见，文本的";
+
+        var jsonStr = JSON.stringify(jsonValue);
+        console.log("approveTask:");
+        var url = gUrl + "orderInfo/approveTask?session=" + sessionId;
+        ajax(url, jsonStr).done(function(data, status) {
+
+            console.log(data);
+            if (data.result == 0) {
+            } else {
+                alert(data.msg);
+            }
+        })
+    }
+    function queryExceptionTask(a) {
+        console.log("queryExceptionTask:");
+        var url = gUrl + "workflow/queryExceptionTask?session=" + sessionId;
+        ajax(url, '').done(function(data, status) {
+
+            console.log(data);
+            if (data.result == 0) {
+            } else {
+                alert(data.msg);
+            }
+        })
+    }
+    function queryProcessInstance() {
+
+        console.log("queryProcessInstance:");
+        var url = gUrl + "process-instance/377512/diagram-layout";
+        ajax(url, '').done(function(data, status) {
+
+            console.log(data);
+
+        })
+    }
+
+    function getLinkType(){
+        var url = gUrl + "dimunify/getLinkType?session=" + sessionId;
+
+        ajax(url, '').done(function(data, status) {
+            console.log("getLinkType:");
+            console.log(data);
+            if (data.result == 0) {
+                //alert(data.list[0].dimTxt);
+            } else {
+                alert(data.msg);
+            }
+        })
+    }
+
+
+    function copyBanner() {
+        console.log("copyBanner:");
+        var url = gUrl + "banner/copyOne?session=" + sessionId+"&activeId="+'26354';
+        ajax(url, '').done(function(data, status) {
+
+            console.log(data);
+            if (data.result == 0) {
+            } else {
+                alert(data.msg);
+            }
+        })
+    }
+
+
+</script>
+</body>
+</html>
