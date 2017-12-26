@@ -8,8 +8,7 @@ import java.util.Vector;
 
 /**
  * Created by clz on 2017/12/26.
- * 火车票示例 (Vector 是线程安全的) 第一种；第二种
- * TrainTest
+ * 火车票示例(Vector 是线程安全的) 第一种；第二种
  */
 public class TrainTest {
 
