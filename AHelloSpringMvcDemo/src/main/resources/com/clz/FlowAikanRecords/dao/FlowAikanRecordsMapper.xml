@@ -207,4 +207,41 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
+
+  <select id="findByRequest" parameterType="com.clz.FlowAikanRecords.vo.RequestVo" resultType="com.clz.FlowAikanRecords.vo.ResponseVo">
+    SELECT
+    f.time AS resTime,
+    f.msg AS resMsg
+    from flow_aikan_records f
+    <where>
+      to_number(to_char(F.TIME,'yyyymmdd')) >= to_number(#{body.time})
+      AND NUM = #{body.num}
+    </where>
+  </select>
+
+  <!--运维app平台示例代码-->
+  <!--<select id="test" parameterType="RequestMdl" resultType="VisibleCollectMdl">-->
+    <!--select-->
+    <!--t.record_time AS cottTime,-->
+    <!--t.record_value AS dataValue-->
+    <!--from t_mop_data_storage t-->
+    <!--<where>-->
+      <!--t.rule_id = #{body.planId}-->
+      <!--AND t.record_time between #{body.startTime} AND #{body.endTime}-->
+      <!--AND record_key = #{body.queryKey}-->
+      <!--<if test="body.vks !=null ">-->
+        <!--and t.record_id in-->
+        <!--<foreach collection="body.vks" index="index" item="item" open="(" separator="," close=")">-->
+          <!--select s.record_id-->
+          <!--from t_mop_data_storage s-->
+          <!--WHERE-->
+          <!--s.rule_id = #{body.planId}-->
+          <!--AND s.record_time between #{body.startTime} AND #{body.endTime}-->
+          <!--AND s.record_key = #{item.key}-->
+          <!--AND s.record_value = #{item.value}-->
+        <!--</foreach>-->
+      <!--</if>-->
+    <!--</where>-->
+    <!--ORDER BY t.record_time-->
+  <!--</select>-->
 </mapper>

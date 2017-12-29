@@ -3,6 +3,9 @@ package com.clz.FlowAikanRecords.dao;
 import com.clz.FlowAikanRecords.bean.FlowAikanRecords;
 import com.clz.FlowAikanRecords.bean.FlowAikanRecordsExample;
 import java.util.List;
+
+import com.clz.FlowAikanRecords.vo.RequestVo;
+import com.clz.FlowAikanRecords.vo.ResponseVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface FlowAikanRecordsMapper {
@@ -19,4 +22,6 @@ public interface FlowAikanRecordsMapper {
     int updateByExampleSelective(@Param("record") FlowAikanRecords record, @Param("example") FlowAikanRecordsExample example);
 
     int updateByExample(@Param("record") FlowAikanRecords record, @Param("example") FlowAikanRecordsExample example);
+
+    List<ResponseVo> findByRequest(@Param("body") RequestVo requestVo);
 }
