@@ -5,8 +5,6 @@ import com.clz.FlowAikanRecords.bean.FlowAikanRecords;
 import com.clz.FlowAikanRecords.service.FlowAikanRecordsService;
 import com.clz.FlowAikanRecords.vo.RequestVo;
 import com.clz.FlowAikanRecords.vo.ResponseVo;
-import com.clz.web.HttpRequestUtil;
-import com.sun.glass.ui.mac.MacPasteboard;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
